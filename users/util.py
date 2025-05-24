@@ -32,9 +32,11 @@ def get_spotify_profile_data(user):
         response = requests.get('https://api.spotify.com/v1/me', headers=headers)
         if response.status_code == 200:
             data = response.json()
+            images = data.get('images', [])
+            image_url = images[0]['url'] if images else None
             return {
                 'display_name': data.get('display_name'),
-                'image_url': data.get('images', [{}])[0].get('url'),
+                'image_url': image_url,
             }
         else:
             print(f'Error: {response.status_code} — {response.text}')
