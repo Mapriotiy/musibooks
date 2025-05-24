@@ -1,0 +1,64 @@
+{% load static %}
+<nav class=" bg-[#14453D] px-6 md:px-32 text-gray-200 font-montserrat">
+            <div class="flex flex-wrap items-center justify-between w-full">
+        <!--logo-->
+            <div class="flex flex-row gap-3">
+                <a class=" py-3 flex-shrink-0 cursor-pointer" href="{% url 'users:' %}">
+                    <img src="{% static 'assets/favicon.png' %}" class="w-30 h-10 sm:w-36 sm:h-12 md:w-48 md:h-16">
+                </a>
+            </div>
+        <!--log in-->
+                {% if spotify_data %}
+                    <div x-data="{ open: false }" class="relative inline-block cursor-pointer" @click="open = !open">
+                      <div class="flex items-center gap-3 select-none bg-[#0D3631] transition duration-300 ease-in-out  hover:bg-[#38B18D] rounded-full p-2 px-3">
+                        {% if spotify_data.image_url %}
+                          <img
+                            src="{{ spotify_data.image_url }}"
+                            alt="User avatar"
+                            class="w-10 h-10 rounded-full"
+                          />
+                        {% else %}
+                          <img
+                            src="{% static 'assets/default-avatar.png' %}"
+                            alt="Default avatar"
+                            class="w-8 h-8 rounded-full"
+                          />
+                        {% endif %}
+                        <span class=" text-xl md:text-2xl">
+                          {{ spotify_data.display_name }}
+                        </span>
+                      </div>
+
+                      <div
+                        x-show="open"
+                        @click.away="open = false"
+                        x-transition
+                        class="absolute right-0 mt-2 bg-[#0D3631] brightness-90 rounded-xl shadow-xl py-2 w-48 z-50"
+                      >
+                          <a href="{% url 'users:profile' %}" class="flex items-center gap-2 px-4 py-2 transition duration-300 ease-in-out rounded-full hover:bg-[#38B18D] text-sm text-left w-full">
+                              <svg fill="#FFFFFF" class="h-5 w-5" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="800px" height="800px" viewBox="0 0 45.532 45.532" xml:space="preserve">
+                                <g>
+                                    <path d="M22.766,0.001C10.194,0.001,0,10.193,0,22.766s10.193,22.765,22.766,22.765c12.574,0,22.766-10.192,22.766-22.765   S35.34,0.001,22.766,0.001z M22.766,6.808c4.16,0,7.531,3.372,7.531,7.53c0,4.159-3.371,7.53-7.531,7.53   c-4.158,0-7.529-3.371-7.529-7.53C15.237,10.18,18.608,6.808,22.766,6.808z M22.761,39.579c-4.149,0-7.949-1.511-10.88-4.012   c-0.714-0.609-1.126-1.502-1.126-2.439c0-4.217,3.413-7.592,7.631-7.592h8.762c4.219,0,7.619,3.375,7.619,7.592   c0,0.938-0.41,1.829-1.125,2.438C30.712,38.068,26.911,39.579,22.761,39.579z"/>
+                                </g>
+                              </svg>
+                              Profile</a>
+                          <hr class="border-gray-300 my-1 mx-2 border-t-2" />
+                          <a href="{% url 'users:logout' %}" class="flex items-center gap-2 px-4 py-2 transition duration-300 ease-in-out rounded-full hover:bg-[#38B18D] text-sm text-left w-full">
+                                  <svg fill="#FFFFFF" class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M16 13v-2H7V8l-5 4 5 4v-3z"/><path d="M20 3h-9c-1.103 0-2 .897-2 2v4h2V5h9v14h-9v-4H9v4c0 1.103.897 2 2 2h9c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2z"/></svg>
+                               Log out</a>
+                      </div>
+                    </div>
+                {% else %}
+                <div class="pt-1 flex-shrink-0">
+                  <div class="pt-1 flex-shrink-0">
+                    <a href="{% url 'social:begin' 'spotify' %}">
+                      <button type="button" class="text-gray-200 bg-[#0D3631] transition duration-300 ease-in-out cursor-pointer hover:bg-[#3D7068] rounded-full text-sm p-2 md:p-4 inline-flex me-2 mb-2">
+                            <img src="{% static 'assets/spotify.png' %}" class="w-5 h-5 me-2">
+                             Sign in with Spotify
+                        </button>
+                    </a>
+                    </div>
+                 </div>
+                {% endif %}
+        </div>
+</nav>

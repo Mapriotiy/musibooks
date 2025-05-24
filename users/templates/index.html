@@ -1,0 +1,54 @@
+{% extends "base.html"%}
+{% load static %}
+
+{% block title %}MusiBooks{% endblock %}
+{% block content %}
+    <div class="relative bg-[#14453D] max-w-full max-h-2/3  px-6 md:px-32">
+        <img src="{% static 'assets/book.jpg' %}"
+             class="absolute inset-0 w-full h-full object-cover opacity-10">
+         <div class="absolute inset-0 bg-gradient-to-b from-[#14453D]/90 via-transparent to-transparent/10 z-10"></div>
+        <div class="relative z-10 flex md:flex-row flex-col items-center gap-3 justify-between">
+          <div class="flex flex-col gap-3 ">
+<!--              text-->
+              <div class="leading-normal text-3xl lg:text-6xl text-white font-montserrat ">
+                    <h1 class="transition duration-300 ease-in-out hover:text-[#43C59E]">
+                      Find books based<br>
+                    </h1>
+                      <h1 class="transition duration-300 ease-in-out whitespace-nowrap hover:text-[#43C59E]">
+                          on your music taste.<br>
+                      </h1>
+              </div>
+                <p class="text-1xl md:text-3xl text-white">Find books based on your music taste</p>
+              </div>
+<!--            book img-->
+            <img src="{% static 'assets/spriteV1.png' %}" class="w-full md:w-xl h-auto ">
+        </div>
+<!--        arrow-->
+        <div class="hidden lg:flex justify-center items-center pb-4 -mt-20">
+            <svg fill="#FFFFFF" id="scrollDownBtn" class="relative z-10 h-16 w-16  cursor-pointer transition duration-300 ease-in-out hover:scale-110 hover:fill-[#43C59E]" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
+            <g>
+                <g>
+                    <g>
+                        <path d="M256,0C114.618,0,0,114.618,0,256s114.618,256,256,256s256-114.618,256-256S397.382,0,256,0z M256,469.333     c-117.818,0-213.333-95.515-213.333-213.333S138.182,42.667,256,42.667S469.333,138.182,469.333,256S373.818,469.333,256,469.333     z"/>
+                        <path d="M347.582,198.248L256,289.83l-91.582-91.582c-8.331-8.331-21.839-8.331-30.17,0c-8.331,8.331-8.331,21.839,0,30.17     l106.667,106.667c8.331,8.331,21.839,8.331,30.17,0l106.667-106.667c8.331-8.331,8.331-21.839,0-30.17     C369.42,189.917,355.913,189.917,347.582,198.248z"/>
+                    </g>
+                </g>
+            </g>
+            </svg>
+        </div>
+    </div>
+<!-- main section-->
+    <main class="flex-grow bg-[#0F3F3A] text-sm md:text-xl text-gray-200 font-montserrat py-4 px-6 md:px-32">
+        <div class="min-h-screen md:min-h-[50vh] flex flex-col md:flex-row md:justify-between gap-2">
+            <div class="flex flex-col gap-3" x-init="$store.music.fetchTracks()">
+                <!-- period selector-->
+                {% include 'partials/selector.html' %}
+<!--                    top-5-->
+                {% include 'partials/top_list.html' %}
+            </div>
+            <div class="relative aspect-square sm:aspect-video flex items-center justify-center rounded-3xl gap-2 bg-[#0D3631] min-w-full md:min-w-3/5  pb-10 p-3">
+                    {% include 'partials/books.html' %}
+            </div>
+        </div>
+    </main>
+{% endblock %}

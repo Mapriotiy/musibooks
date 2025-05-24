@@ -1,0 +1,36 @@
+    {% load static %}
+    <div class="flex flex-col items-center rounded-3xl w-full md:w-1/2 md:w-auto p-4 bg-[#0D3631] ">
+                        Which tracks will be taken into account?
+                        <div class=" flex flex-col md:flex-row justify-center bg-[#0F3F3A] rounded-xl gap-2 p-1 ">
+                            <button
+                                @click="$store.music.setTerm('short_term')"
+                                :class="{
+                                    'text-gray-200 bg-[#43C59E] shadow': $store.music.selectedTerm === 'short_term',
+                                    'text-gray-200 hover:bg-[#2F6B5B]': $store.music.selectedTerm !== 'short_term'
+                                  }"
+                                class="p-2 rounded-xl font-semibold transition-all duration-300 focus:bg-[#43C59E] focus:ring-blue-500 focus:ring-opacity-75 cursor-pointer"
+                            >
+                                4 Weeks
+                            </button>
+                            <button
+                                @click="$store.music.setTerm('medium_term')"
+                                :class="{
+                                    'text-gray-200 bg-[#43C59E] shadow': $store.music.selectedTerm === 'medium_term',
+                                    'text-gray-200 hover:bg-[#2F6B5B]': $store.music.selectedTerm !== 'medium_term'
+                                  }"
+                                class="p-2 rounded-xl font-semibold transition-all duration-300 focus:bg-[#43C59E] focus:ring-blue-500 focus:ring-opacity-75 cursor-pointer"
+                            >
+                                6 Months
+                            </button>
+                            <button
+                                @click="$store.music.setTerm('long_term')"
+                                :class="{
+                                    'text-gray-200 bg-[#43C59E] shadow': $store.music.selectedTerm === 'long_term',
+                                    'text-gray-200 hover:bg-[#2F6B5B]': $store.music.selectedTerm !== 'long_term'
+                                  }"
+                                class="p-2 rounded-xl font-semibold transition-all duration-300 focus:bg-[#43C59E] focus:ring-blue-500 focus:ring-opacity-75 cursor-pointer"
+                            >
+                                All Time
+                            </button>
+        </div>
+    </div>

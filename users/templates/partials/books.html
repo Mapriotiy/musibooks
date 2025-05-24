@@ -1,0 +1,106 @@
+{% load static %}
+<h1 class="absolute top-4 inset-x-0 text-center  text-xl font-bold">Recommended books</h1>
+<div x-data="bookLoader()" class="w-full h-full text-white mt-12">
+    <div class="flex flex-col  justify-center h-full">
+        <!-- button -->
+        {% if spotify_data %}
+        <div
+            x-show="!loaded && !loading"
+            @click="loadBooks($store.music.selectedTerm)"
+            class="self-center cursor-pointer transition duration-200 hover:scale-110"
+        >
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                 width="64px" height="64px" viewBox="0 0 32 32">
+                <g>
+                    <path fill="#FFFFFF" d="M16,0C7.178,0,0,7.178,0,16s7.178,16,16,16s16-7.178,16-16S24.822,0,16,0z M16,31C7.729,31,1,24.271,1,16 S7.729,1,16,1s15,6.729,15,15S24.271,31,16,31z"/>
+                    <path fill="#FFFFFF" d="M19.609,14.802L14.316,10.8c-0.263-0.197-0.567-0.302-0.88-0.302C12.631,10.498,12,11.158,12,12v8 c0,0.842,0.635,1.502,1.445,1.502c0.313,0,0.619-0.104,0.885-0.304l5.258-3.998c0.382-0.287,0.611-0.742,0.611-1.218 C20.198,15.512,19.983,15.081,19.609,14.802z M18.985,16.401l-5.258,3.998C13.434,20.622,13,20.453,13,20v-8 c0-0.326,0.225-0.502,0.437-0.502c0.096,0,0.19,0.034,0.279,0.101l5.293,4.002c0.165,0.123,0.19,0.292,0.19,0.382 C19.198,16.147,19.122,16.3,18.985,16.401z"/>
+                </g>
+            </svg>
+        </div>
+        {% else %}
+            <a href="{% url 'social:begin' 'spotify' %}" class="self-center">
+                <button type="button" class="text-gray-200 bg-[#0F3F3A] transition duration-300 ease-in-out cursor-pointer hover:bg-[#3D7068] rounded-full text-sm p-2 md:p-4 inline-flex me-2 mb-2">
+                                <img src="{% static 'assets/spotify.png' %}" class="w-5 h-5 me-2">
+                                 Sign in with Spotify
+                </button>
+            </a>
+        {% endif %}
+
+
+        <!-- loader -->
+        <div class="loader_css self-center" style="transform: scale(1.8); transform-origin: center;" x-show="loading">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <!-- reload button-->
+        <svg class="absolute top-4 left-[90%]  w-6 h-6 md:w-9 md:h-9 fill-gray-200 cursor-pointer transition duration-300 hover:scale-110"
+             @click="loadBooks($store.music.selectedTerm)"
+             x-show="loaded"
+             x-transition:enter="transition ease-out duration-500"
+            x-transition:enter-start="opacity-0 scale-90"
+            x-transition:enter-end="opacity-100 scale-100"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 scale-100"
+            x-transition:leave-end="opacity-0 scale-90"
+             version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 303.597 303.597" xml:space="preserve">
+        <path  d="M57.866,268.881c25.982,19.891,56.887,30.403,89.369,30.402h0.002c6.545,0,13.176-0.44,19.707-1.308  c39.055-5.187,73.754-25.272,97.702-56.557c14.571-19.033,24.367-41.513,28.329-65.01c0.689-4.084-2.064-7.954-6.148-8.643  l-19.721-3.326c-1.964-0.33-3.974,0.131-5.595,1.284c-1.621,1.153-2.717,2.902-3.048,4.864  c-3.019,17.896-10.49,35.032-21.608,49.555c-18.266,23.861-44.73,39.181-74.521,43.137c-4.994,0.664-10.061,1-15.058,1  c-24.757,0-48.317-8.019-68.137-23.191c-23.86-18.266-39.18-44.73-43.136-74.519c-3.957-29.787,3.924-59.333,22.189-83.194  c21.441-28.007,54.051-44.069,89.469-44.069c24.886,0,48.484,7.996,68.245,23.122c6.55,5.014,12.43,10.615,17.626,16.754  l-36.934-6.52c-1.956-0.347-3.973,0.101-5.604,1.241c-1.631,1.141-2.739,2.882-3.085,4.841l-3.477,19.695  c-0.72,4.079,2.003,7.969,6.081,8.689l88.63,15.647c0.434,0.077,0.869,0.114,1.304,0.114c1.528,0,3.031-0.467,4.301-1.355  c1.63-1.141,2.739-2.882,3.084-4.841l15.646-88.63c0.721-4.079-2.002-7.969-6.081-8.69l-19.695-3.477  c-4.085-0.723-7.97,2.003-8.689,6.082l-6.585,37.3c-7.387-9.162-15.87-17.463-25.248-24.642  c-25.914-19.838-56.86-30.324-89.495-30.324c-46.423,0-89.171,21.063-117.284,57.787C6.454,93.385-3.878,132.123,1.309,171.178  C6.497,210.236,26.583,244.933,57.866,268.881z"/>
+        </svg>
+        <!-- books list -->
+        <div
+          x-show="loaded"
+          class="mt-6 space-y-4 max-w-full max-h-full w-full overflow-auto"
+          x-transition:enter="transition ease-out duration-600"
+          x-transition:enter-start="opacity-0 translate-y-4"
+          x-transition:enter-end="opacity-100 translate-y-0"
+        >
+            <template x-for="book in books" :key="book.key">
+                <div
+                      class="relative flex flex-row gap-2 bg-[#0F3F3A] w-full p-4 rounded-lg shadow transform transition-all duration-300"
+                      x-transition:enter="transition ease-out duration-600"
+                      x-transition:enter-start="opacity-0 scale-95"
+                      x-transition:enter-end="opacity-100 scale-100"
+                      x-data="{ colors: ['#ed2939', '#DDE392', '#81E4DA', '#EEC0C6', '#4C86A8',
+                       '#DB5A42', '#CA3C25','#80FF72', '#5F0F40', '#CB793A' ], bgColor: '' }"
+                      x-init="bgColor = colors[Math.floor(Math.random() * colors.length)]"
+                      :style="{ backgroundColor: bgColor }"
+                >
+                    <div class="absolute inset-0 bg-[#0F3F3A] opacity-40" style="border-radius: 0.5rem;"></div>
+                    <template x-if="book.cover_i">
+                        <img class="relative z-10 mt-2 w-16 h-16 rounded"
+                             :src="`https://covers.openlibrary.org/b/id/${book.cover_i}-S.jpg`"
+                             alt="Book cover">
+                    </template>
+                    <div class="relative z-10 flex flex-col gap-2 w-full">
+                        <h2 class="text-lg font-semibold" x-text="book.title"></h2>
+                        <p class="text-sm" x-text="book.author_name?.[0] || 'Author not found'"></p>
+                    </div>
+                    <div>
+                        <button
+                          class=" top-2 right-2 z-10 text-white relative z-10"
+                           @click="$store.favourites.toggleFavourite(book)"
+                            x-show="!$store.favourites.isFavourite(book)"
+                        >
+                          <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none" class="transition hover:scale-110 cursor-pointer" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </button>
+                        <button
+                          class=" top-2 right-2 z-10 text-white relative z-10"
+                          @click="$store.favourites.toggleFavourite(book)"
+                            x-show="$store.favourites.isFavourite(book)"
+                        >
+                          <svg width="32px" height="32px" viewBox="0 0 24 24" fill="#FFFFFF" class="transition hover:scale-110 cursor-pointer" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11.2691 4.41115C11.5006 3.89177 11.6164 3.63208 11.7776 3.55211C11.9176 3.48263 12.082 3.48263 12.222 3.55211C12.3832 3.63208 12.499 3.89177 12.7305 4.41115L14.5745 8.54808C14.643 8.70162 14.6772 8.77839 14.7302 8.83718C14.777 8.8892 14.8343 8.93081 14.8982 8.95929C14.9705 8.99149 15.0541 9.00031 15.2213 9.01795L19.7256 9.49336C20.2911 9.55304 20.5738 9.58288 20.6997 9.71147C20.809 9.82316 20.8598 9.97956 20.837 10.1342C20.8108 10.3122 20.5996 10.5025 20.1772 10.8832L16.8125 13.9154C16.6877 14.0279 16.6252 14.0842 16.5857 14.1527C16.5507 14.2134 16.5288 14.2807 16.5215 14.3503C16.5132 14.429 16.5306 14.5112 16.5655 14.6757L17.5053 19.1064C17.6233 19.6627 17.6823 19.9408 17.5989 20.1002C17.5264 20.2388 17.3934 20.3354 17.2393 20.3615C17.0619 20.3915 16.8156 20.2495 16.323 19.9654L12.3995 17.7024C12.2539 17.6184 12.1811 17.5765 12.1037 17.56C12.0352 17.5455 11.9644 17.5455 11.8959 17.56C11.8185 17.5765 11.7457 17.6184 11.6001 17.7024L7.67662 19.9654C7.18404 20.2495 6.93775 20.3915 6.76034 20.3615C6.60623 20.3354 6.47319 20.2388 6.40075 20.1002C6.31736 19.9408 6.37635 19.6627 6.49434 19.1064L7.4341 14.6757C7.46898 14.5112 7.48642 14.429 7.47814 14.3503C7.47081 14.2807 7.44894 14.2134 7.41394 14.1527C7.37439 14.0842 7.31195 14.0279 7.18708 13.9154L3.82246 10.8832C3.40005 10.5025 3.18884 10.3122 3.16258 10.1342C3.13978 9.97956 3.19059 9.82316 3.29993 9.71147C3.42581 9.58288 3.70856 9.55304 4.27406 9.49336L8.77835 9.01795C8.94553 9.00031 9.02911 8.99149 9.10139 8.95929C9.16534 8.93081 9.2226 8.8892 9.26946 8.83718C9.32241 8.77839 9.35663 8.70162 9.42508 8.54808L11.2691 4.41115Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </button>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>
+
+<script type="application/json" id="user-favourite-books">
+  {{ user_favourite_books|safe }}
+</script>

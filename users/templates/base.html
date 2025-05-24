@@ -1,0 +1,44 @@
+{% load static %}
+<!doctype html>
+<html class="bg-[#14453D]">
+<head>
+    <title>MusiBooks</title>
+    <link rel="icon" href="{% static 'assets/favicon.ico' %}" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <script src="{% static 'js/htmx.min.js' %}"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body  class="flex flex-col min-h-screen">
+    <!--Navbar-->
+
+    {% include "partials/navbar.html" %}
+
+    <main class="flex-grow">
+        {% block content %}
+        {% endblock %}
+    </main>
+<!--footer-->
+
+    {% include "partials/footer.html" %}
+</body>
+</html>
+
+<script>
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+    const cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].trim();
+      if (cookie.substring(0, name.length + 1) === (name + '=')) {
+        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
