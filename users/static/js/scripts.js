@@ -44,6 +44,7 @@ function bookLoader() {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken'),
           },
+          credentials: 'same-origin',
           body: JSON.stringify({ term }),
         });
 
@@ -132,6 +133,7 @@ function selector() {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken'),
           },
+          credentials: 'same-origin',
           body: JSON.stringify({ term: this.selectedTerm }),
         });
 
@@ -171,6 +173,7 @@ document.addEventListener('alpine:init', () => {
             'Content-Type': 'application/json',
             'X-CSRFToken': getCookie('csrftoken')
           },
+          credentials: 'same-origin',
           body: JSON.stringify({
             book_key: book.key,
             title: book.title,
@@ -199,7 +202,8 @@ document.addEventListener('alpine:init', () => {
           method: 'DELETE',
           headers: {
             'X-CSRFToken': getCookie('csrftoken')
-          }
+          },
+          credentials: 'same-origin',
         });
 
         if (response.ok) {
@@ -220,7 +224,8 @@ document.addEventListener('alpine:init', () => {
               method: 'DELETE',
               headers: {
                 'X-CSRFToken': getCookie('csrftoken')
-              }
+              },
+              credentials: 'same-origin',
             });
 
             if (response.ok) {
