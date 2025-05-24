@@ -9,12 +9,12 @@ from .models import FavouriteBook
 from .serializers import FavouriteBookSerializer
 from .util import get_spotify_profile_data, get_user_private_data
 from .ai_util import prompt_ai, extract_json_from_text
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from django.views.decorators.csrf import ensure_csrf_cookie
 import json
 
 
 # Create your views here.
-@csrf_exempt
+@ensure_csrf_cookie
 def index(request):
     spotify_data = None
     private_data = None
@@ -27,12 +27,12 @@ def index(request):
 
     return render(request, 'index.html', {'spotify_data': spotify_data, 'user_favourite_books': json.dumps(user_favourites, cls=DjangoJSONEncoder)})
 
-@csrf_exempt
+@ensure_csrf_cookie
 def logout_view(request):
     logout(request)
     return redirect('/')
 
-@csrf_exempt
+@ensure_csrf_cookie
 def profile(request):
     spotify_data = get_spotify_profile_data(request.user)
     user_favourites=list(
@@ -42,8 +42,7 @@ def profile(request):
         'spotify_data': spotify_data,
         'user_favourite_books': json.dumps(user_favourites, cls=DjangoJSONEncoder),
     })
-
-@csrf_exempt
+@ensure_csrf_cookie
 def update_top_api(request):
     if request.method == 'POST' and request.user.is_authenticated:
         try:
@@ -62,7 +61,7 @@ def update_top_api(request):
 
 #Use with Open Router or Hugging Face
 #
-@csrf_exempt
+@ensure_csrf_cookie
 def books_api(request):
     if request.method == 'POST' and request.user.is_authenticated:
         try:
