@@ -24,8 +24,6 @@ def index(request):
         user_favourites = list(
         FavouriteBook.objects.filter(user=request.user).values('id', 'book_key', 'title', 'author', 'cover_i'))
 
-    print(spotify_data)
-
     return render(request, 'index.html', {'spotify_data': spotify_data, 'user_favourite_books': json.dumps(user_favourites, cls=DjangoJSONEncoder)})
 
 @ensure_csrf_cookie
