@@ -68,7 +68,7 @@ def books_api(request):
             term = data.get('term', 'all_time')
             tracks = ''
             books = []
-            private_data = get_user_private_data(request.user, term, 25)
+            private_data = get_user_private_data(request.user, term, 5)
             for track in private_data:
                 tracks += f" {track['name']} - {track['artists'][0]}; "
 
@@ -76,7 +76,7 @@ def books_api(request):
                 "Recommend me STRICTLY 5 POPULAR BOOK NAMES(NO AUTHOR NAMES IN OUTPUT) in JSON format(Example:\n"
                 '{"books": ["Book 1", "Book 2"]})'
                 f" Based on that user likes these tracks {tracks} BUT ALSO YOU SHOULD ADD SOME NEW GENRES FOR THINGS TO BE INTERESTING "
-                "NO EXTRA WORDS ALSO WRITE 1984 AS Nineteen eighty-four"
+                "NO EXTRA WORDS"
             )
             books = extract_json_from_text(books_str)
 
