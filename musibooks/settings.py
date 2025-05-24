@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'social_django',
+    'corsheaders',
     'livereload',
     'users',
 ]
@@ -72,6 +73,7 @@ HUGGING_FACE_API_KEY = os.getenv('HUGGING_FACE_API_KEY')
 
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -172,3 +174,11 @@ CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SECURE = True
 CSRF_TRUSTED_ORIGINS = ["https://musibooks.onrender.com"]
+
+CORS_ALLOWED_ORIGINS = [
+    "https://musibooks.onrender.com",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://musibooks.onrender.com",
+]
