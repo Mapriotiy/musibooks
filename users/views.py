@@ -61,29 +61,30 @@ def update_top_api(request):
 def books_api(request):
     if request.method == 'POST' and request.user.is_authenticated:
         try:
-            # data = json.loads(request.body)
-            # term = data.get('term', 'all_time')
-            # tracks = ''
-            # books = []
-            # private_data = get_user_private_data(request.user, term, 50)
-            # for track in private_data:
-            #     tracks += f" {track['name']} - {track['artists'][0]}; "
+            data = json.loads(request.body)
+            term = data.get('term', 'all_time')
+            tracks = ''
+            books = []
+            private_data = get_user_private_data(request.user, term, 25)
+            for track in private_data:
+                tracks += f" {track['name']} - {track['artists'][0]}; "
+
+            books_str = prompt_ai(
+                "Recommend me STRICTLY 5 POPULAR BOOK NAMES(NO AUTHOR NAMES IN OUTPUT) in JSON format(Example:\n"
+                '{"books": ["Book 1", "Book 2"]})'
+                f" Based on that user likes these tracks {tracks} BUT ALSO YOU SHOULD ADD SOME NEW GENRES FOR THINGS TO BE INTERESTING "
+                "NO EXTRA WORDS ALSO WRITE 1984 AS Nineteen eighty-four"
+            )
+            books = extract_json_from_text(books_str)
+
+            # debug mode
+            # txt = ['Nineteen eighty-four', 'Brave New World', 'The Catcher in the Rye', 'The Bell Jar',
+            #          'Fahrenheit 451']
             #
-            # books_str = prompt_ai(
-            #     "Recommend me STRICTLY 5 POPULAR(but you may add a little bit of new genres) BOOK NAMES(NO AUTHOR NAMES IN OUTPUT) in JSON format(Example:\n"
-            #     '{"books": ["Book 1", "Book 2"]})'
-            #     f" Based on that user likes these tracks {tracks} "
-            #     "NO EXTRA WORDS ALSO WRITE 1984 AS Nineteen eighty-four"
-            # )
-            # books = extract_json_from_text(books_str)
-
-            txt = ['Nineteen eighty-four', 'Brave New World', 'The Catcher in the Rye', 'The Bell Jar',
-                     'Fahrenheit 451']
-
-            data = {'books': txt}
-
-            books = data
-            print(books)
+            # data = {'books': txt}
+            #
+            # books = data
+            # print(books)
             return JsonResponse(books, safe=False)
 
         except Exception as e:

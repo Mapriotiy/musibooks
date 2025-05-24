@@ -69,7 +69,8 @@
                     <template x-if="book.cover_i">
                         <img class="relative z-10 mt-2 w-16 h-16 rounded"
                              :src="`https://covers.openlibrary.org/b/id/${book.cover_i}-S.jpg`"
-                             alt="Book cover">
+                             alt="Book cover"
+                                onerror="this.src='{% static "assets/book_ico.png" %}'">
                     </template>
                     <div class="relative z-10 flex flex-col gap-2 w-full">
                         <h2 class="text-lg font-semibold" x-text="book.title"></h2>
