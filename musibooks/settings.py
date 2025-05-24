@@ -80,7 +80,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'social_django.middleware.SocialAuthExceptionMiddleware',
-    'livereload.middleware.LiveReloadScript'
+    'livereload.middleware.LiveReloadScript',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 
