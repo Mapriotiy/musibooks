@@ -17,13 +17,14 @@ import json
 @ensure_csrf_cookie
 def index(request):
     spotify_data = None
-    private_data = None
     user_favourites = []
 
     if request.user.is_authenticated:
         spotify_data = get_spotify_profile_data(request.user)
         user_favourites = list(
         FavouriteBook.objects.filter(user=request.user).values('id', 'book_key', 'title', 'author', 'cover_i'))
+
+    print(spotify_data)
 
     return render(request, 'index.html', {'spotify_data': spotify_data, 'user_favourite_books': json.dumps(user_favourites, cls=DjangoJSONEncoder)})
 
