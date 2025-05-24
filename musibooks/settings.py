@@ -27,7 +27,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://musibooks.onrender.com']
+ALLOWED_HOSTS = ['musibooks.onrender.com']
 
 
 # Application definition
