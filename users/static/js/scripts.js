@@ -53,16 +53,33 @@ function bookLoader() {
         if (!data.books || !Array.isArray(data.books)) throw new Error('Invalid data type');
 
         const results = await loadInBatches(data.books, 5, book =>
-          fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(book)}&limit=1`)
+          fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(book)}&limit=5`)
             .then(res => res.json())
-            .then(result => result.docs?.[0])
+            .then(result => {
+              if (!result.docs || !result.docs.length) return null;
+
+              for (const doc of result.docs) {
+                if (doc && doc.key && doc.title) return doc;
+              }
+              return null;
+            })
             .catch(err => {
               console.error(`Error loading book "${book}":`, err);
               return null;
             })
         );
 
-        this.books = results.filter(book => book !== null);
+        const uniqueBooks = [];
+        const seenKeys = new Set();
+
+        for (const book of results) {
+          if (book && !seenKeys.has(book.key)) {
+            seenKeys.add(book.key);
+            uniqueBooks.push(book);
+          }
+        }
+
+        this.books = uniqueBooks;
         this.loaded = true;
 
       } catch (error) {
