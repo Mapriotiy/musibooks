@@ -991,6 +991,13 @@
       }
     }
   }
+  .hover\:rotate-90 {
+    &:hover {
+      @media (hover: hover) {
+        rotate: 90deg;
+      }
+    }
+  }
   .hover\:bg-\[\#2F6B5B\] {
     &:hover {
       @media (hover: hover) {
